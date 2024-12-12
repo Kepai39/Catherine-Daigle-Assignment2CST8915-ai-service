@@ -87,6 +87,8 @@ jobs:
 
   # Step 3: Deploy Job
   # Deploy the container image to a container orchestrator, such as K8s.
+
+  
   Deploy:
     runs-on: ubuntu-latest
 
@@ -94,9 +96,17 @@ jobs:
     needs: Release
 
     steps:
+      - name: Decrypt large secret
+        run: ./decrypt_secret.sh
+        env:
+          LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
+      - name: Test printing your secret (Remove this step in production)
+        run: cat $HOME/secrets/kube_config_base64.txt
+
+
       - name: Deploy to AKS
         env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBE_CONFIG_DATA: $HOME/secrets/kube_config_base64.txt
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
           DEPLOYMENT_NAME: ${{ vars.DEPLOYMENT_NAME }}
@@ -108,7 +118,7 @@ jobs:
           kubectl rollout restart deployment/$DEPLOYMENT_NAME
       - name: Verify Deployment
         env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBE_CONFIG_DATA: $HOME/secrets/kube_config_base64.txt
           DEPLOYMENT_NAME: ${{ vars.DEPLOYMENT_NAME }}
         run: |
           echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig
