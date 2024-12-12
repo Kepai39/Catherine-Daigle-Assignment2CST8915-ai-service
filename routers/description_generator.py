@@ -35,7 +35,7 @@ async def post_description(request: Request) -> JSONResponse:
         if useLocalLLM:
             print("Calling local LLM")
             
-            prompt = f"Describe this technology product highlighting its abilities and usefullness using exciting language.\nProduct name: {name}\ntags: {tags}\ndescription:\""
+            prompt = f"Describe this tech product highlighting its abilities and usefullness using exciting language.\nProduct name: {name}\ntags: {tags}\ndescription:\""
             temperature = 0.5
             top_p = 0.0
 
