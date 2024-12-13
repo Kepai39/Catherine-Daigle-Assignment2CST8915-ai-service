@@ -34,7 +34,7 @@ async def post_description(request: Request) -> JSONResponse:
 
         if useLocalLLM:
             print("Calling local LLM")
-            
+            # Prompt to descrobe products in the AI service and lean the keywords towards tech
             prompt = f"Describe this tech product highlighting its abilities and usefullness using exciting language.\nProduct name: {name}\ntags: {tags}\ndescription:\""
             temperature = 0.5
             top_p = 0.0

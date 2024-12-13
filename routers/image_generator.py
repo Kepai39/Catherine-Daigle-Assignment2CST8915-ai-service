@@ -44,9 +44,10 @@ async def post_image(request: Request) -> JSONResponse:
             "Content-Type": "application/json",
             "api-key": api_key
         }
+        # Prompt to describe image generation for tech products in bestbuy
         payload = {
             "model": "dall-e-3",
-            "prompt": f"Generate a photo realistic image of a product in its packaging in front of a plain background for a product called <{name}> with a description <{description}> to be sold within Bestbuy",
+            "prompt": f"Generate a photo realistic image of a product in its packaging in front of a plain background for a product called <{name}> with a description <{description}> to be sold within a tech store",
             "n": 1
         }
 
